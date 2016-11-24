@@ -224,9 +224,9 @@ public class IndexFiles {
     	  Elements title_element = document.select("title");
     	  Elements url_element = document.select("url");  
     	  title = title_element.text();
-    	  docContents = html2text(readFile(file.toString(),Charset.defaultCharset()));
+    	  docContents = html2text(readFile(file.toString(),StandardCharsets.UTF_8));
     	  URL = url_element.text();
-    	  snippet = html2text(readFile(file.toString(),Charset.defaultCharset()));
+    	  snippet = html2text(readFile(file.toString(),StandardCharsets.UTF_8));
     	  snippet = snippet.substring(0, Math.min(snippet.length(), 100));
       }catch(IllegalArgumentException e){  
       }
