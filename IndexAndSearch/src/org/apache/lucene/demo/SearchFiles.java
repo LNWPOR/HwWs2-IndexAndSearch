@@ -241,7 +241,7 @@ public class SearchFiles {
         	  System.out.println("   Snippet: " + newSnippet);
           }else{
         	  if (snippet != null) {
-            	  System.out.println("   Snippet: " + snippet);
+            	  System.out.println("   Snippet:" + snippet);
               }else{
             	  System.out.println("   Snippet: No Snippet");
               }

@@ -227,7 +227,7 @@ public class IndexFiles {
     	  docContents = html2text(readFile(file.toString(),StandardCharsets.UTF_8));
     	  URL = url_element.text();
     	  snippet = html2text(readFile(file.toString(),StandardCharsets.UTF_8));
-    	  snippet = snippet.substring(0, Math.min(snippet.length(), 100));
+    	  snippet = snippet.substring(URL.length(), Math.min(snippet.length(), 100));
       }catch(IllegalArgumentException e){  
       }
       doc.add(new StringField("title", title, Field.Store.YES));
