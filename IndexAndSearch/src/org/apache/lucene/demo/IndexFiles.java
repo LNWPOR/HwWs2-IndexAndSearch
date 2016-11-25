@@ -23,6 +23,7 @@ import org.apache.lucene.analysis.th.ThaiAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.LongField;
+import org.apache.lucene.document.StoredField;
 import org.apache.lucene.document.StringField;
 import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.IndexWriter;
@@ -39,6 +40,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.StringReader;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileVisitResult;
@@ -48,6 +50,8 @@ import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /** Index all text files under a directory.
  * <p>
@@ -57,7 +61,9 @@ import java.util.Date;
 public class IndexFiles {
   
   private IndexFiles() {}
-
+  //===========Start==========
+  public static Map<String, String> pageRankMap = new HashMap<String, String>();
+  //===========End============
   /** Index all text files under a directory. */
   public static void main(String[] args) {
     String usage = "java org.apache.lucene.demo.IndexFiles"
@@ -115,6 +121,25 @@ public class IndexFiles {
       //
       // iwc.setRAMBufferSizeMB(256.0);
 
+      //========= start ========
+      String pageRankResultPath = "E:/KU/Year4/IR/HwWs3-PageRank/pageRankResult.txt";
+      Path pageRankResultFile = Paths.get(pageRankResultPath);
+      String pageRankResult = readFile(pageRankResultFile.toString(),StandardCharsets.UTF_8);
+      //System.out.println(pageRankResult);
+      //Map<String, Float> pageRankMap = new HashMap<String, Float>();
+      BufferedReader bufReader = new BufferedReader(new StringReader(pageRankResult));
+      String linePageRankResult=null;
+      while( (linePageRankResult=bufReader.readLine()) != null )
+      {
+    	  //System.out.println(linePageRankResult);
+    	  String[] linePageRankResultParts = linePageRankResult.split(":pr:");
+    	  //System.out.println(linePageRankResultParts[0]);
+    	  pageRankMap.put(linePageRankResultParts[0], linePageRankResultParts[1]);
+    	  //System.out.println(pageRankMap.get(linePageRankResultParts[0]));
+      }
+      
+      //========= end ==========
+      
       IndexWriter writer = new IndexWriter(dir, iwc);
       indexDocs(writer, docDir);
 
@@ -219,6 +244,7 @@ public class IndexFiles {
       String docContents = "";
       String snippet = "";
       String URL = "";
+      String pageRank = "";
       try {
     	  org.jsoup.nodes.Document document = Jsoup.parse(docFile, "UTF-8");
     	  Elements title_element = document.select("title");
@@ -227,13 +253,18 @@ public class IndexFiles {
     	  docContents = html2text(readFile(file.toString(),StandardCharsets.UTF_8));
     	  URL = url_element.text();
     	  snippet = html2text(readFile(file.toString(),StandardCharsets.UTF_8));
-    	  snippet = snippet.substring(URL.length(), Math.min(snippet.length(), 1000));
+    	  snippet = snippet.substring(URL.length(), Math.min(snippet.length(), 1000));;
+    	  if(pageRankMap.get(URL) != null){
+    		  pageRank = pageRankMap.get(URL);
+    		  doc.add(new StringField("title", title, Field.Store.YES));
+    	      doc.add(new StringField("snippet", snippet, Field.Store.YES));
+    	      doc.add(new TextField("docContents", docContents, Field.Store.YES));
+    	      doc.add(new StringField("URL", URL, Field.Store.YES));
+    	      doc.add(new StoredField("PageRank", pageRank));
+    	  }
       }catch(IllegalArgumentException e){  
       }
-      doc.add(new StringField("title", title, Field.Store.YES));
-      doc.add(new StringField("snippet", snippet, Field.Store.YES));
-      doc.add(new TextField("docContents", docContents, Field.Store.YES));
-      doc.add(new StringField("URL", URL, Field.Store.YES));
+      
       
       //====== End =========
       
