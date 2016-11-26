@@ -261,6 +261,8 @@ public class IndexFiles {
     	      doc.add(new TextField("docContents", docContents, Field.Store.YES));
     	      doc.add(new StringField("URL", URL, Field.Store.YES));
     	      doc.add(new StoredField("PageRank", pageRank));
+    	  }else{
+    		  return;
     	  }
       }catch(IllegalArgumentException e){  
       }
