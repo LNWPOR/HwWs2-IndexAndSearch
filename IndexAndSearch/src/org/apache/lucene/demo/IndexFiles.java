@@ -250,9 +250,9 @@ public class IndexFiles {
     	  Elements title_element = document.select("title");
     	  Elements url_element = document.select("url");  
     	  title = title_element.text();
-    	  docContents = html2text(readFile(file.toString(),StandardCharsets.UTF_8));
+    	  docContents = html2text(readFile(file.toString(),Charset.defaultCharset()));
     	  URL = url_element.text();
-    	  snippet = html2text(readFile(file.toString(),StandardCharsets.UTF_8));
+    	  snippet = html2text(readFile(file.toString(),Charset.defaultCharset()));
     	  snippet = snippet.substring(URL.length(), Math.min(snippet.length(), 1000));;
     	  if(pageRankMap.get(URL) != null){
     		  pageRank = pageRankMap.get(URL);
