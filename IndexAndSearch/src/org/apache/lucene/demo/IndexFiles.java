@@ -252,8 +252,8 @@ public class IndexFiles {
     	  title = title_element.text();
     	  docContents = html2text(readFile(file.toString(),Charset.defaultCharset()));
     	  URL = url_element.text();
-    	  snippet = html2text(readFile(file.toString(),Charset.defaultCharset()));
-    	  snippet = snippet.substring(URL.length() + title.length(), Math.min(snippet.length(), 1000));;
+    	  snippet = docContents;
+    	  snippet = snippet.substring(URL.length() + title.length(), Math.min(snippet.length(), 1000));
     	  if(pageRankMap.get(URL) != null){
     		  pageRank = pageRankMap.get(URL);
     		  doc.add(new StringField("title", title, Field.Store.YES));

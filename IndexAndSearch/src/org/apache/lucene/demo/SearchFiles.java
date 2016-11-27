@@ -207,9 +207,10 @@ public class SearchFiles {
           }
           
           //print Snippet
-          String docContentsNoTitle = docContents.substring(title.length(), docContents.length());
-          int index = docContentsNoTitle.toLowerCase().indexOf(userQuery);
-          if(index != -1){
+          String docContentsNoURLandTitle = docContents.substring(URL.length() + title.length(), docContents.length());
+          int indexDocs = docContents.toLowerCase().indexOf(userQuery); 
+          if(indexDocs != -1){
+        	  int index = docContentsNoURLandTitle.toLowerCase().indexOf(userQuery);
         	  String newSnippet = "";
         	  int range = 500;
         	  int startIndex;
@@ -221,8 +222,8 @@ public class SearchFiles {
         	  }else{
         		  startIndex = index - range;
         	  }
-        	  if(index + userQuery.length() + range > docContentsNoTitle.length() - 1){
-        		  endIndex = docContentsNoTitle.length() - 1;
+        	  if(index + userQuery.length() + range > docContentsNoURLandTitle.length() - 1){
+        		  endIndex = docContentsNoURLandTitle.length() - 1;
         	  }else{
         		  endIndex = index + userQuery.length() + range;
         	  }
@@ -230,15 +231,15 @@ public class SearchFiles {
         	  //insert highlight
         	  for (int j = startIndex; j < endIndex; j++) {
         		if(j == index - 1){
-        			newSnippet += docContentsNoTitle.charAt(j);
+        			newSnippet += docContentsNoURLandTitle.charAt(j);
         			newSnippet += "<B>";
         		}
         		else if(j == index + userQuery.length()){
         			newSnippet += "</B>";
-        			newSnippet += docContentsNoTitle.charAt(j);
+        			newSnippet += docContentsNoURLandTitle.charAt(j);
         		}
         		else{
-        			newSnippet += docContentsNoTitle.charAt(j);
+        			newSnippet += docContentsNoURLandTitle.charAt(j);
         		}
         	  }
         	  System.out.println("   Snippet: " + newSnippet);
