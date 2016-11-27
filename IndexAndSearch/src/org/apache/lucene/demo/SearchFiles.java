@@ -207,10 +207,11 @@ public class SearchFiles {
           }
           
           //print Snippet
-          int index = docContents.toLowerCase().indexOf(userQuery);
+          String docContentsNoTitle = docContents.substring(title.length(), docContents.length());
+          int index = docContentsNoTitle.toLowerCase().indexOf(userQuery);
           if(index != -1){
         	  String newSnippet = "";
-        	  int range = 50;
+        	  int range = 500;
         	  int startIndex;
         	  int endIndex;
         	  
@@ -220,8 +221,8 @@ public class SearchFiles {
         	  }else{
         		  startIndex = index - range;
         	  }
-        	  if(index + userQuery.length() + range > docContents.length() - 1){
-        		  endIndex = docContents.length() - 1;
+        	  if(index + userQuery.length() + range > docContentsNoTitle.length() - 1){
+        		  endIndex = docContentsNoTitle.length() - 1;
         	  }else{
         		  endIndex = index + userQuery.length() + range;
         	  }
@@ -229,15 +230,15 @@ public class SearchFiles {
         	  //insert highlight
         	  for (int j = startIndex; j < endIndex; j++) {
         		if(j == index - 1){
-        			newSnippet += docContents.charAt(j);
+        			newSnippet += docContentsNoTitle.charAt(j);
         			newSnippet += "<B>";
         		}
         		else if(j == index + userQuery.length()){
         			newSnippet += "</B>";
-        			newSnippet += docContents.charAt(j);
+        			newSnippet += docContentsNoTitle.charAt(j);
         		}
         		else{
-        			newSnippet += docContents.charAt(j);
+        			newSnippet += docContentsNoTitle.charAt(j);
         		}
         	  }
         	  System.out.println("   Snippet: " + newSnippet);
