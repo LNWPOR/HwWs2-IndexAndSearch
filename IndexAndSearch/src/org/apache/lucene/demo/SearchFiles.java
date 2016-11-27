@@ -207,9 +207,9 @@ public class SearchFiles {
           }
           
           //print Snippet
-          String docContentsNoURLandTitle = docContents.substring(URL.length() + title.length(), docContents.length());
           int indexDocs = docContents.toLowerCase().indexOf(userQuery); 
           if(indexDocs != -1){
+        	  String docContentsNoURLandTitle = docContents.substring(URL.length() + title.length(), docContents.length());
         	  int index = docContentsNoURLandTitle.toLowerCase().indexOf(userQuery);
         	  String newSnippet = "";
         	  int range = 500;
