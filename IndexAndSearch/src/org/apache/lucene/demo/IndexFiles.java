@@ -264,7 +264,8 @@ public class IndexFiles {
     	  }else{
     		  return;
     	  }
-      }catch(IllegalArgumentException e){  
+      }catch(IllegalArgumentException e){ 
+    	  return;
       }
       
       
