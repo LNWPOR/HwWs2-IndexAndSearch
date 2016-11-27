@@ -229,10 +229,12 @@ public class SearchFiles {
         	  //insert highlight
         	  for (int j = startIndex; j < endIndex; j++) {
         		if(j == index - 1){
+        			newSnippet += docContents.charAt(j);
         			newSnippet += "<B>";
         		}
         		else if(j == index + userQuery.length()){
         			newSnippet += "</B>";
+        			newSnippet += docContents.charAt(j);
         		}
         		else{
         			newSnippet += docContents.charAt(j);
