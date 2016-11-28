@@ -90,8 +90,8 @@ public class SearchFiles {
     
     IndexReader reader = DirectoryReader.open(FSDirectory.open(Paths.get(index)));
     IndexSearcher searcher = new IndexSearcher(reader);
-    Analyzer analyzer = new StandardAnalyzer();
-    //Analyzer analyzer = new ThaiAnalyzer();
+    //Analyzer analyzer = new StandardAnalyzer();
+    Analyzer analyzer = new ThaiAnalyzer();
 
     BufferedReader in = null;
     if (queries != null) {

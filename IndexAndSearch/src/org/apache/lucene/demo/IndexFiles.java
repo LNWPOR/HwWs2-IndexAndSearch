@@ -53,6 +53,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.mozilla.universalchardet.UniversalDetector;
+
 /** Index all text files under a directory.
  * <p>
  * This is a command-line application demonstrating simple Lucene indexing.
@@ -101,8 +103,8 @@ public class IndexFiles {
       System.out.println("Indexing to directory '" + indexPath + "'...");
 
       Directory dir = FSDirectory.open(Paths.get(indexPath));
-      Analyzer analyzer = new StandardAnalyzer();
-      //Analyzer analyzer = new ThaiAnalyzer();
+      //Analyzer analyzer = new StandardAnalyzer();
+      Analyzer analyzer = new ThaiAnalyzer();
       IndexWriterConfig iwc = new IndexWriterConfig(analyzer);
 
       if (create) {
@@ -202,9 +204,10 @@ public class IndexFiles {
  	return new String(encoded, encoding);
   }
   
+  /*
   public static String html2text(String html) {
 	    return Jsoup.parse(html).text();
-  }
+  }*/
   //====== End ========
   
   
@@ -234,8 +237,8 @@ public class IndexFiles {
       // so that the text of the file is tokenized and indexed, but not stored.
       // Note that FileReader expects the file to be in UTF-8 encoding.
       // If that's not the case searching for special characters will fail.
-      //doc.add(new TextField("contents", new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8))));
-      doc.add(new TextField("contents", new BufferedReader(new InputStreamReader(stream))));
+      doc.add(new TextField("contents", new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8))));
+      //doc.add(new TextField("contents", new BufferedReader(new InputStreamReader(stream))));
       
       //====== Start =======
       
@@ -250,8 +253,33 @@ public class IndexFiles {
     	  Elements title_element = document.select("title");
     	  Elements url_element = document.select("url");  
     	  title = title_element.text();
-    	  docContents = html2text(readFile(file.toString(),Charset.defaultCharset()));
     	  URL = url_element.text();
+    	  docContents = document.text();
+    	  //docContents = html2text(readFile(file.toString(),StandardCharsets.UTF_8));
+          //docContents = html2text(readFile(file.toString(),Charset.defaultCharset()));
+    	  
+    	  //====================check encoding start==============================
+          /*
+    	  byte[] buf = new byte[4096];
+          String fileName = file.toString();
+          java.io.FileInputStream fis = new java.io.FileInputStream(fileName);
+          UniversalDetector detector = new UniversalDetector(null);
+          int nread;
+          while ((nread = fis.read(buf)) > 0 && !detector.isDone()) {
+              detector.handleData(buf, 0, nread);
+          }
+          detector.dataEnd();
+
+          String encoding = detector.getDetectedCharset();
+          if (encoding != null) {
+              System.out.println("Detected encoding = " + encoding);
+          } else {
+              System.out.println("No encoding detected.");
+          }
+          detector.reset();
+          */
+          //====================check encoding end==============================
+    	  
     	  snippet = docContents;
     	  snippet = snippet.substring(URL.length() + title.length(), Math.min(snippet.length(), 1000));
     	  if(pageRankMap.get(URL) != null){
@@ -261,6 +289,8 @@ public class IndexFiles {
     	      doc.add(new TextField("docContents", docContents, Field.Store.YES));
     	      doc.add(new StringField("URL", URL, Field.Store.YES));
     	      doc.add(new StoredField("PageRank", pageRank));
+    	      //System.out.println(docContents);
+    	      //System.out.println();
     	  }else{
     		  return;
     	  }
