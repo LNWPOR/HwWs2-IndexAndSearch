@@ -1,11 +1,11 @@
 # HwWs2-IndexAndSearch
 This is a project for index the web that craw from crawler (https://github.com/LNWPOR/HwWs1-WebCrawler) program.
 
-# implemented by
+## Implemented by
 * JAVA
 * Lucene
 
-# Running
+## Running
 * Open this project by using Eclipse.
 * You must use the output websites from crawler.
 * Or you can download the output websites here websites : https://drive.google.com/file/d/0B9O0qfX4FFUwdEFJaTRuX2R3c0U/view?usp=sharing
