@@ -1,5 +1,5 @@
 # HwWs2-IndexAndSearch
-This is a project for index the web that craw from crawler (https://github.com/LNWPOR/HwWs1-WebCrawler) program.
+This is a project for index the web that craw from [crawler](https://github.com/LNWPOR/HwWs1-WebCrawler) program.
 
 ## Implemented by
 * JAVA
